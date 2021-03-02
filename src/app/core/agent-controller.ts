@@ -93,7 +93,7 @@ export class AgentController {
             agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
             // Espera
             let action = agent.send();
-            this.actions.push({ agentID: agent.getID(), action });
+            this.actions.push({ agentID: agent.getID(), action: action, at: new Date() });
             this.problem.update(this.data, action, agent.getID());
             if (this.problem.goalTest(this.data)) {
                 this.finishAll();
@@ -117,14 +117,14 @@ export class AgentController {
     async loop() {
         let stop = false;
         while (!stop) {
+            await sleep(750);
             //Creates a thread for every single agent
             Object.values(this.agents).forEach(agent => {
                 if (!this.problem.goalTest(this.data)) {
                     agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
                     let action = agent.send();
-                    this.actions.push({ agentID: agent.getID(), action });
+                    this.actions.push({ agentID: agent.getID(), action: action, at: new Date() });
                     this.problem.update(this.data, action, agent.getID());
-                    agent.state = this.data.states[agent.id];
                     if (this.problem.goalTest(this.data)) {
                         stop = true;
                     } else {
@@ -133,7 +133,6 @@ export class AgentController {
                     }
                 }
             });
-            await sleep(750);
         }
         this.finishAll();
     }

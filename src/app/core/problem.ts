@@ -44,8 +44,8 @@ export class Problem {
      * @param {*} agentClass 
      * @param {*} initialState 
      */
-    addAgent(agentID, agentClass, initialState) {
-        let agent = new agentClass(agentID);
+    addAgent(agentID, agentArgs, agentClass, initialState) {
+        let agent = new agentClass(agentID, agentArgs);
         this.controller.register(agent, initialState);
     }
 

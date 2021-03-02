@@ -11,6 +11,11 @@ export class WorldComponent implements OnInit, OnChanges {
 
   @Input() problem: Problem;
   @Input() woldArrMap: number[][];
+  @Input() targetSrc: string;
+  @Input() showLogs: boolean = true;
+
+  public logs: string[];
+  public showCoordenades: boolean = false;
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -18,7 +23,10 @@ export class WorldComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    if (changes['problem'] && changes['woldArrMap']) {
+      this.ref.markForCheck();
+      console.log(this.problem, this.woldArrMap)
+    }
   }
 
   get ready() {
@@ -43,7 +51,7 @@ export class WorldComponent implements OnInit, OnChanges {
   hasAgentIn(state) {
     return Object.keys(this.problem.controller.agents).find(agentID => {
       const agent = this.problem.controller.agents[agentID];
-      const agentState = agent.state || agent.initialState;
+      const agentState = this.problem.controller.data.states[agentID] || agent.initialState;
       return agentState.x == state.x && agentState.y == state.y;
     })
   }
@@ -55,7 +63,7 @@ export class WorldComponent implements OnInit, OnChanges {
   agentsIn(state): Agent[] {
     return Object.keys(this.problem.controller.agents).filter(agentID => {
       const agent = this.problem.controller.agents[agentID];
-      const agentState = agent.state || agent.initialState;
+      const agentState = this.problem.controller.data.states[agentID] || agent.initialState;
       return agentState.x == state.x && agentState.y == state.y;
     }).map(agentID => this.problem.controller.agents[agentID]);
   }
@@ -83,8 +91,7 @@ export class WorldComponent implements OnInit, OnChanges {
   }
 
   onTurnController(result) {
-    console.log(new Date().toDateString() + " Turn: " + JSON.stringify(result.actions[result.actions.length - 1]))
-    console.log(this.problem.controller.agents['Jerry']);
+    this.logs = result.actions.map(log => `Controller ${log.at}: Agent ${log.agentID} make the action ${log.action}`)
     this.ref.markForCheck();
   }
 

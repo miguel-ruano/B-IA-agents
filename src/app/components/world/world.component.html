@@ -1,12 +1,36 @@
-<div class="world-component" [ngStyle]="worldStyle">
-    <div *ngFor="let row of woldArrMap;let ir =index" class="__row">
-        <div *ngFor="let col of row;let ic = index" class="__col">
-            <bia-w-block [layout]="col ? 'block' : 'empty'"></bia-w-block>
-            <ng-container *ngIf="hasAgentIn({y:ir,x:ic})">
-                <span class="__agent">
-                    <bia-agent *ngFor="let agent of agentsIn({y:ir,x:ic})"></bia-agent>
-                </span>
-            </ng-container>
-        </div>
+<ng-container *ngIf="!ready; else world_comp">
+  <h2>Launch Settings First</h2>
+</ng-container>
+
+<ng-template #world_comp>
+  <div class="world-component">
+    <div class="">
+      <label class="checkbox">
+        <input type="checkbox" [(ngModel)]="showCoordenades"> Show coordenades
+      </label>
     </div>
-</div>
+    <div class="__world-grid" [ngStyle]="worldStyle">
+      <div *ngFor="let row of woldArrMap;let ir =index" class="__row">
+        <div *ngFor="let col of row;let ic = index" class="__col">
+          <bia-w-block [label]="showCoordenades ? (ic+','+ir) : ''"
+            [layout]="col ? col == -1 ? 'target' : 'block' : 'empty'" [targetSrc]="targetSrc"></bia-w-block>
+          <ng-container *ngIf="hasAgentIn({y:ir,x:ic})">
+            <span class="__agent">
+              <bia-agent *ngFor="let agent of agentsIn({y:ir,x:ic})"></bia-agent>
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="showLogs" [ngTemplateOutlet]="actions_logs"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #actions_logs>
+  <div class="__logs py-4">
+    <h2 class="title">Actions Log</h2>
+    <div class="__logs-body">
+      <span *ngFor="let log of logs" class="__log-item">{{log}}</span>
+    </div>
+  </div>
+</ng-template>

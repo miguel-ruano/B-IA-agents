@@ -1,24 +1,53 @@
 .world-component {
+  .__world-grid {
     display: flex;
     flex-direction: column;
-    border: 3px dashed #333;
+    border: 3px solid #b58d74;
+    margin: 0 auto;
+
     .__row {
+      display: flex;
+      flex-direction: row;
+
+      .__col {
+        flex: 1;
+        position: relative;
+      }
+
+      .__agent {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
         display: flex;
-        flex-direction: row;
-        .__col {
-            flex: 1;
-            position: relative;
-        }
-        .__agent {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        align-items: center;
+        justify-content: center;
+      }
     }
+  }
+
+  .__logs {
+    text-align: left;
+    max-width: 600px;
+    margin: auto;
+
+    .__logs-body {
+      background-color: black;
+      color: white;
+      padding: 1em;
+      border-radius: 1em;
+      height: 100%;
+      min-height: 200px;
+      max-height: 300px;
+      overflow-y: auto;
+
+      .__log-item {
+        display: block;
+        margin-top: .5em;
+        border-bottom: 1px dashed #ccc;
+      }
+    }
+  }
 }

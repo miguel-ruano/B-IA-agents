@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UTILS } from '.';
 import { Problem } from './core';
 import { ChesseProblem, MiceAgent } from './models';
+
+interface AppSettings {
+  world: number[][], position: { x: number, y: number },
+  maxIterations: number, targetSrc: string, agentCommands: { [key: string]: any }
+}
 
 @Component({
   selector: 'app-root',
@@ -9,23 +16,61 @@ import { ChesseProblem, MiceAgent } from './models';
 })
 export class AppComponent implements OnInit {
 
-  title = 'B-IA-agents';
-  world = [
-    [0, 0, 0, 0],
-    [0, 1, 1, -1],
-    [0, 1, 0, 0],
-    [0, 0, 0, 1]
-  ]
-
   problem: Problem;
+  problemSettings: AppSettings;
+
+  private _form: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.chesseProblem()
+    this.problemSettings = this.settings;
+    this.chesseProblem(this.problemSettings);
   }
 
-  chesseProblem() {
-    this.problem = new ChesseProblem({ maxIterations: 12 });
-    this.problem.addAgent('Jerry', MiceAgent, { x: 0, y: 2 });
+  initState() {
+    this.problemSettings = this.settings;
+    this.chesseProblem(this.problemSettings);
+  }
+
+  start(world_component = null) {
+    if (this.form.valid) {
+      this.initState()
+      this.chesseProblem(this.problemSettings);
+      if (world_component) {
+        setTimeout(() => {
+          world_component.start();
+        }, 10);
+      }
+    }
+  }
+
+  get form(): FormGroup {
+    if (!this._form) {
+      this._form = this.fb.group({
+        'maxIterations': [12, Validators.required],
+        'agentCommands': [JSON.stringify(UTILS.CONSTANTS.COMMANDS0)],
+        'targetSrc': ['/assets/cheese.png'],
+        'ip_x': [UTILS.CONSTANTS.POSITIONS0.x, Validators.required],
+        'ip_y': [UTILS.CONSTANTS.POSITIONS0.y, Validators.required],
+        'world': [JSON.stringify(UTILS.CONSTANTS.MAP0), Validators.required]
+      });
+    }
+    return this._form;
+  }
+
+  get settings(): AppSettings {
+    const form = this.form.getRawValue();
+    return {
+      world: JSON.parse(form.world), position: { x: form.ip_x, y: form.ip_y },
+      maxIterations: form.maxIterations, targetSrc: form.targetSrc,
+      agentCommands: JSON.parse(form.agentCommands)
+    };
+  }
+
+  chesseProblem(settings: AppSettings) {
+    this.problem = new ChesseProblem({ maxIterations: settings.maxIterations });
+    this.problem.addAgent('Jerry', settings.agentCommands, MiceAgent, settings?.position || { x: 0, y: 2 });
   }
 
 }

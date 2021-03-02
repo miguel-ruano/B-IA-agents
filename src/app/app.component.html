@@ -1,8 +1,54 @@
-<div class="columns p-3">
-    <div class="column is-two-thirds">
-        <bia-world #world_component [woldArrMap]="world" [problem]="problem"></bia-world>
+<div class="app-component p-3">
+  <div class="columns">
+    <div class="column is-full">
+      <h1 class="title has-text-centered">IA Agent</h1>
     </div>
-    <div class="column">
-        <button class="button is-primary" (click)="world_component.start()">Start</button>
+  </div>
+  <div class="columns">
+    <div class="column is-two-thirds __world">
+      <bia-world #world_component [woldArrMap]="problemSettings.world" [problem]="problem"
+        [targetSrc]="problemSettings.targetSrc"></bia-world>
     </div>
+    <div class="column __settings">
+      <form [formGroup]="form">
+        <div class="field">
+          <label class="label">Max Iterations</label>
+          <div class="control">
+            <input formControlName="maxIterations" class="input" type="number" placeholder="Max Iterations">
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Position</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input formControlName="ip_x" class="input" min="0" type="number" placeholder="X">
+              </p>
+            </div>
+            <div class="field">
+              <p class="control is-expanded">
+                <input formControlName="ip_y" class="input is-success" min="0" type="number" placeholder="Y">
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">World Array</label>
+          <div class="control">
+            <textarea formControlName="world" class="textarea"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Commands Table</label>
+          <div class="control">
+            <textarea formControlName="agentCommands" rows="7" class="textarea"></textarea>
+          </div>
+        </div>
+        <button class="button is-primary" (click)="start(world_component)">Start</button>
+      </form>
+
+    </div>
+  </div>
 </div>

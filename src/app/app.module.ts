@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
@@ -13,7 +14,9 @@ import { WorldModule } from './components/world/world.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    WorldModule
+    WorldModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,1 +1,3 @@
-<div class="w-block-component" [ngClass]="{'block':layout=='block'}"></div>
+<div class="w-block-component" [ngClass]="layout" [ngStyle]="style">
+    <label *ngIf="label">{{label}}</label>
+</div>
