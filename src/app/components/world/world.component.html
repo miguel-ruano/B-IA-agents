@@ -1,0 +1,12 @@
+<div class="world-component" [ngStyle]="worldStyle">
+    <div *ngFor="let row of woldArrMap;let ir =index" class="__row">
+        <div *ngFor="let col of row;let ic = index" class="__col">
+            <bia-w-block [layout]="col ? 'block' : 'empty'"></bia-w-block>
+            <ng-container *ngIf="hasAgentIn({y:ir,x:ic})">
+                <span class="__agent">
+                    <bia-agent *ngFor="let agent of agentsIn({y:ir,x:ic})"></bia-agent>
+                </span>
+            </ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="columns p-3">
+    <div class="column is-two-thirds">
+        <bia-world #world_component [woldArrMap]="world" [problem]="problem"></bia-world>
+    </div>
+    <div class="column">
+        <button class="button is-primary" (click)="world_component.start()">Start</button>
+    </div>
+</div>
