@@ -45,8 +45,21 @@
 
       .__log-item {
         display: block;
-        margin-top: .5em;
+        margin-top: 0.5em;
         border-bottom: 1px dashed #ccc;
+        ::ng-deep {
+          ._lblue {
+            color: #22cadc;
+          }
+
+          ._lgreen {
+            color: #1cff1c;
+          }
+
+          ._lred {
+            color: #ff5400;
+          }
+        }
       }
     }
   }

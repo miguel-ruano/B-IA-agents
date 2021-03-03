@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { Agent, Problem } from 'src/app/core';
 
@@ -15,9 +16,10 @@ export class WorldComponent implements OnInit, OnChanges {
   @Input() showLogs: boolean = true;
 
   public logs: string[];
+  public completeTask: boolean = false;
   public showCoordenades: boolean = false;
 
-  constructor(private ref: ChangeDetectorRef) { }
+  constructor(private ref: ChangeDetectorRef, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
   }
@@ -41,6 +43,8 @@ export class WorldComponent implements OnInit, OnChanges {
 
   start() {
     if (this.ready) {
+      this.logs = [];
+      this.completeTask = false;
       this.problem.solve(this.woldArrMap, {
         onFinish: (data) => this.onFinishController(data),
         onTurn: (data) => this.onTurnController(data)
@@ -69,30 +73,21 @@ export class WorldComponent implements OnInit, OnChanges {
   }
 
   onFinishController(result) {
-    let agentID = result.actions[result.actions.length - 1].agentID;
-    console.log("agent: " + agentID);
-    console.log(result.actions);
-    let world = JSON.parse(JSON.stringify(result.data.world));
-    let agentState = result.data.states[agentID];
-    world[agentState.y][agentState.x] = "X"
-    let status = 1;
-    for (let line of world) {
-      console.log(line)
-      for (let cell of line)
-        if (cell == -1)
-          status = -1
+    for (const agentID in result.agents) {
+      const agentCompleteTask = this.problem.agentSolveProblem(agentID);
+      this.logs.push(this.logMap({ action: agentCompleteTask ? this.problem.GoalCompleteMessage : this.problem.GoalIncompleteMessage, agentID: agentID, at: new Date() }));
     }
-
-    if (status == -1)
-      console.log("Agent cannot solve this problem :(")
-    else
-      console.log("Agent could solve this problem :)")
-
+    this.completeTask = true;
+    this.ref.markForCheck();
   }
 
   onTurnController(result) {
-    this.logs = result.actions.map(log => `Controller ${log.at}: Agent ${log.agentID} make the action ${log.action}`)
+    this.logs = result.actions.map(log => this.logMap(log))
     this.ref.markForCheck();
+  }
+
+  private logMap(log: { action: string, at: Date, agentID: string }) {
+    return `<span class="_lblue">${this.datePipe.transform(log.at, 'mediumTime')}</span>: Agent <span class="_lred">${log.agentID}</span> make the action <span class="_lgreen">${log.action}</span>`
   }
 
 }

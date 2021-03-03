@@ -3,9 +3,11 @@ import { AgentController, AgentControllerCallbacks } from "./agent-controller";
 /**
  * This class specifies the problem to be solved
  */
-export class Problem {
+export abstract class Problem {
 
     public controller: AgentController;
+    public GoalCompleteMessage: string = 'Take the Goal !!!';
+    public GoalIncompleteMessage: string = 'Does not take the goal :(';
 
     constructor(initialState) {
         this.controller = new AgentController();
@@ -68,5 +70,12 @@ export class Problem {
         this.controller.setup({ world: world, problem: this });
         return this.controller.start(callbacks, true);
     }
+
+    /**
+     * determines if agent associated to passed id has complete the goal
+     * @param agentID agentId
+     */
+    abstract agentSolveProblem(agentID: string): boolean;
+
 }
 

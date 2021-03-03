@@ -15,7 +15,7 @@ export class AgentController {
     protected currentAgentIndex;
     protected callbacks: AgentControllerCallbacks;
     public agents: { [key: string]: Agent } = {};
-    public world0 = null;
+    public world0: number[][] = [];
     public actions = [];
     public data = { states: {}, world: {} };
 
@@ -142,14 +142,15 @@ export class AgentController {
      * and execute the onFinish callback 
      */
     finishAll() {
+        const data = { actions: this.getActions(), data: this.data, agents: { ...this.agents } }
         // Stop all the agents
         Object.values(this.agents).forEach(agent => {
-            //agent.stop();
-            this.unregister(agent);
+            agent.stop();
+            //this.unregister(agent);
         });
         //Execute the callback
         if (this.callbacks.onFinish)
-            this.callbacks.onFinish({ actions: this.getActions(), data: this.data });
+            this.callbacks.onFinish(data);
     }
 
     /**

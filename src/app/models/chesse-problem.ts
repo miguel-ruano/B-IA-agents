@@ -18,6 +18,8 @@ function min(data) {
  */
 export class ChesseProblem extends Problem {
     public env;
+    public GoalCompleteMessage: string = 'Take the Cheese !!!';
+    public GoalIncompleteMessage: string = "Don't take the cheese :(";
     
     constructor(args) {
         super(args);
@@ -103,13 +105,22 @@ export class ChesseProblem extends Problem {
         return result;
     }
 
-    /**
-     * Solve the given problem. We don't need to change in this case
-     * @param {*} problem 
-     * @param {*} callbacks 
-     */
-    /*solve(problem, callbacks) {
-        this.controller.setup({ world: problem, problem: this });
-        this.controller.start(callbacks);
-    }*/
+    agentSolveProblem(agentID: string): boolean {
+        const agentState = this.controller.data.states[agentID]
+        const goalCoordinate = this.goalCoordinate;
+        return agentState.x == goalCoordinate.x && agentState.y == goalCoordinate.y;
+    }
+
+    get goalCoordinate() {
+        const coordinate = { x: -1, y: -1 };
+        for (let index = 0; index < this.controller.world0.length; index++) {
+            const row = this.controller.world0[index];
+            const colInd = row.indexOf(-1);
+            if (colInd > -1) {
+                return { x: colInd, y: index };
+            }
+        }
+        return coordinate;
+    }
+
 }

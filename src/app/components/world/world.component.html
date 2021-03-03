@@ -30,7 +30,7 @@
   <div class="__logs py-4">
     <h2 class="title">Actions Log</h2>
     <div class="__logs-body">
-      <span *ngFor="let log of logs" class="__log-item">{{log}}</span>
+      <span *ngFor="let log of logs" class="__log-item" [innerHTML]="log"></span>
     </div>
   </div>
 </ng-template>
