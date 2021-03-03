@@ -20,7 +20,7 @@ export class CheeseProblem extends Problem {
     public env;
     public GoalCompleteMessage: string = 'Take the Cheese !!!';
     public GoalIncompleteMessage: string = "Don't take the cheese :(";
-    
+
     constructor(args) {
         super(args);
         this.env = args;
@@ -28,7 +28,7 @@ export class CheeseProblem extends Problem {
 
     /**
      * Check if the given solution solves the problem. You must override.
-     * The current state of the enviroment is maintained in data.world
+     * The current states of the enviroment is maintained in data.world
      * @param {Object} solution 
      */
     goalTest(data) {
@@ -43,7 +43,7 @@ export class CheeseProblem extends Problem {
 
     /**
      * The transition model. 
-     * Tells how to change the state (data) based on the given actions. You must override
+     * Tells how to change the states (data) based on the given actions. You must override
      * In this case, the actions can be one the four movements or the TAKE action.
      * In this case, what changes based on the movement actions is the x or y position of the agent
      * or the current cell if the action is TAKE
@@ -76,6 +76,23 @@ export class CheeseProblem extends Problem {
         }
     }
 
+    nexState(state, action) {
+        const states = { ...state };
+        if (action == "UP") {
+            states.y -= 1;
+        }
+        if (action == "DOWN") {
+            states.y += 1;
+        }
+        if (action == "LEFT") {
+            states.x -= 1;
+        }
+        if (action == "RIGHT") {
+            states.x += 1;
+        }
+        return states;
+    }
+
     /**
      * Gives the world representation for the agent at the current stage.
      * Notice that the agent don't have access to the whole labyrinth. It only "see"
@@ -100,9 +117,11 @@ export class CheeseProblem extends Problem {
 
         result = result.map(value => value > 0 ? 1 : 0);
 
+        // INITIAL WEIGHT
+        result.push(0);
         //SMELL
         result.push(Math.abs(map[y][x]));
-        return result;
+        return { path: result, coordinate: { x: x, y: y } };
     }
 
     agentSolveProblem(agentID: string): boolean {

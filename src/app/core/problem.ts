@@ -32,6 +32,15 @@ export abstract class Problem {
     }
 
     /**
+     * compute the next state for passed state for the passed action
+     * @param state state to evaluate
+     * @param action action to take
+     */
+    nexState(state, action) {
+        //TODO modify data
+    }
+
+    /**
      * Gives the world representation for the agent at the current stage
      * @param {*} agentID 
      * @returns and object with the information to be sent to the agent
@@ -47,7 +56,7 @@ export abstract class Problem {
      * @param {*} initialState 
      */
     addAgent(agentID, agentArgs, agentClass, initialState) {
-        let agent = new agentClass(agentID, agentArgs);
+        let agent = new agentClass(agentID, { args: agentArgs, problem: this });
         this.controller.register(agent, initialState);
     }
 

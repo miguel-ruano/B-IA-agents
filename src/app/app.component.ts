@@ -49,11 +49,11 @@ export class AppComponent implements OnInit {
     if (!this._form) {
       this._form = this.fb.group({
         'maxIterations': [12, Validators.required],
-        'agentCommands': [JSON.stringify(UTILS.CONSTANTS.COMMANDS0)],
+        'agentCommands': [JSON.stringify(UTILS.CONSTANTS.COMMANDS1)],
         'targetSrc': ['/assets/cheese.png'],
-        'ip_x': [UTILS.CONSTANTS.POSITIONS0.x, Validators.required],
-        'ip_y': [UTILS.CONSTANTS.POSITIONS0.y, Validators.required],
-        'world': [JSON.stringify(UTILS.CONSTANTS.MAP0), Validators.required]
+        'ip_x': [UTILS.CONSTANTS.POSITIONS1.x, Validators.required],
+        'ip_y': [UTILS.CONSTANTS.POSITIONS1.y, Validators.required],
+        'world': [JSON.stringify(UTILS.CONSTANTS.MAP1), Validators.required]
       });
     }
     return this._form;
