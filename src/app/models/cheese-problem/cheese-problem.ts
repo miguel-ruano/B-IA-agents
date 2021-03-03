@@ -1,4 +1,4 @@
-import { Problem } from "../core";
+import { Problem } from "../../core";
 
 function min(data) {
     let min = 9999999;
@@ -16,7 +16,7 @@ function min(data) {
 /**
  * Simple reflex agent problem. Define a problem to be solved by a simple reflex agent 
  */
-export class ChesseProblem extends Problem {
+export class CheeseProblem extends Problem {
     public env;
     public GoalCompleteMessage: string = 'Take the Cheese !!!';
     public GoalIncompleteMessage: string = "Don't take the cheese :(";

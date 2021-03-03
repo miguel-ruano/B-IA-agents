@@ -1,2 +1,2 @@
-export * from './chesse-problem';
-export * from './mice-agent';
+export * from './cheese-problem/cheese-problem';
+export * from './cheese-problem/mouse-agent';

@@ -1,10 +1,10 @@
-import { Agent } from "../core";
+import { Agent } from "../../core";
 
 /**
  * Simple reflex agent. Search for an object whithin a labyrinth. 
  * If the object is found the agen take it.
  */
-export class MiceAgent extends Agent {
+export class MouseAgent extends Agent {
     constructor(id, table) {
         super(id);
         //LEFT, UP, RIGHT, DOWN, CELL

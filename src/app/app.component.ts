@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UTILS } from '.';
 import { Problem } from './core';
-import { ChesseProblem, MiceAgent } from './models';
+import { CheeseProblem, MouseAgent } from './models';
 
 interface AppSettings {
   world: number[][], position: { x: number, y: number },
@@ -25,18 +25,18 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.problemSettings = this.settings;
-    this.chesseProblem(this.problemSettings);
+    this.cheeseProblem(this.problemSettings);
   }
 
   initState() {
     this.problemSettings = this.settings;
-    this.chesseProblem(this.problemSettings);
+    this.cheeseProblem(this.problemSettings);
   }
 
   start(world_component = null) {
     if (this.form.valid) {
       this.initState()
-      this.chesseProblem(this.problemSettings);
+      this.cheeseProblem(this.problemSettings);
       if (world_component) {
         setTimeout(() => {
           world_component.start();
@@ -68,9 +68,9 @@ export class AppComponent implements OnInit {
     };
   }
 
-  chesseProblem(settings: AppSettings) {
-    this.problem = new ChesseProblem({ maxIterations: settings.maxIterations });
-    this.problem.addAgent('Jerry', settings.agentCommands, MiceAgent, settings?.position || { x: 0, y: 2 });
+  cheeseProblem(settings: AppSettings) {
+    this.problem = new CheeseProblem({ maxIterations: settings.maxIterations });
+    this.problem.addAgent('Jerry', settings.agentCommands, MouseAgent, settings?.position || { x: 0, y: 2 });
   }
 
 }
