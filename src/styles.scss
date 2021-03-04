@@ -29,3 +29,4 @@ $B-IA-agents-theme: mat-light-theme((
 ));
 
 @include mat-slider-theme($B-IA-agents-theme);
+@include mat-slide-toggle-theme($B-IA-agents-theme);

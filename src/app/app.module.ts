@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from './app-routing.module';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AppComponent } from './app.component';
 import { WorldModule } from './components/world/world.module';
 
@@ -18,7 +19,8 @@ import { WorldModule } from './components/world/world.module';
     WorldModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSlideToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

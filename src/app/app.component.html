@@ -12,9 +12,16 @@
     <div class="column __settings">
       <form [formGroup]="form">
         <div class="field">
+          <div class="control">
+            <mat-slide-toggle formControlName="agentSmart"></mat-slide-toggle>
+            <span class="px-2 has-text-weight-semibold">Smart</span>
+          </div>
+        </div>
+        <div class="field">
           <label class="label">Animation Speed</label>
           <div class="control">
-            <mat-slider #ui_speed formControlName="animationSpeed" min="100" max="1000" step="50" style="width: 100%;"></mat-slider>
+            <mat-slider #ui_speed formControlName="animationSpeed" min="100" max="1000" step="50" style="width: 100%;">
+            </mat-slider>
           </div>
           <p class="help">Speed: {{ui_speed.value}}</p>
         </div>

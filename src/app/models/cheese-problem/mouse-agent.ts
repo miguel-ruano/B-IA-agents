@@ -8,11 +8,13 @@ export class MouseAgent extends Agent {
 
     problem: Problem;
     actions: { action: string, coordinate: any }[] = [];
+    smart: boolean = false;
 
     constructor(id, args) {
         super(id);
         //LEFT, UP, RIGHT, DOWN, CELL
-        this.table = args.args;
+        this.table = args.args.commands;
+        this.smart = args.args.smart;
         this.problem = args.problem;
     }
 
@@ -23,7 +25,7 @@ export class MouseAgent extends Agent {
     send() {
         let viewKey = this.perception.path.join();
         let action = this.table[viewKey] || this.table['default'];
-        if (this.actions.length > 0) {
+        if (this.smart && this.actions.length > 0) {
             let lastActionIndex = this.actions.length - 1;
             let lastAction = this.actions[lastActionIndex];
             let coordinate = this.perception.coordinate;
