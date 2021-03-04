@@ -15,9 +15,10 @@ export class WorldComponent implements OnInit, OnChanges {
   @Input() targetSrc: string;
   @Input() showLogs: boolean = true;
 
-  public logs: string[];
-  public completeTask: boolean = false;
+  //public logs: string[];
+  //public completeTask: boolean = false;
   public showCoordenades: boolean = false;
+  public status: { logs: string[], complete: boolean, actionsCount: number } = { logs: [], complete: false, actionsCount: 0 };
 
   constructor(private ref: ChangeDetectorRef, private datePipe: DatePipe) { }
 
@@ -43,8 +44,7 @@ export class WorldComponent implements OnInit, OnChanges {
 
   start() {
     if (this.ready) {
-      this.logs = [];
-      this.completeTask = false;
+      this.status = { logs: [], complete: false, actionsCount: 0 };
       this.problem.solve(this.woldArrMap, {
         onFinish: (data) => this.onFinishController(data),
         onTurn: (data) => this.onTurnController(data)
@@ -75,14 +75,15 @@ export class WorldComponent implements OnInit, OnChanges {
   onFinishController(result) {
     for (const agentID in result.agents) {
       const agentCompleteTask = this.problem.agentSolveProblem(agentID);
-      this.logs.push(this.logMap({ action: agentCompleteTask ? this.problem.GoalCompleteMessage : this.problem.GoalIncompleteMessage, agentID: agentID, at: new Date() }));
+      this.status.logs.push(this.logMap({ action: agentCompleteTask ? this.problem.GoalCompleteMessage : this.problem.GoalIncompleteMessage, agentID: agentID, at: new Date() }));
     }
-    this.completeTask = true;
+    this.status.complete = true;
     this.ref.markForCheck();
   }
 
   onTurnController(result) {
-    this.logs = result.actions.map(log => this.logMap(log))
+    this.status.logs = result.actions.map(log => this.logMap(log));
+    this.status.actionsCount = result.actions.length;
     this.ref.markForCheck();
   }
 

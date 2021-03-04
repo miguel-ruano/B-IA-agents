@@ -9,7 +9,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 export class WBlockComponent implements OnInit {
 
   @Input() layout: 'empty' | 'block' | 'target' = 'empty';
-  @Input() targetSrc;
+  @Input() targetSrc: string;
   @Input() label: string;
 
   constructor() { }

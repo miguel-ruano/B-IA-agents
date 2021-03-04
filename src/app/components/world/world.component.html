@@ -28,9 +28,17 @@
 
 <ng-template #actions_logs>
   <div class="__logs py-4">
-    <h2 class="title">Actions Log</h2>
+    <div class="columns">
+      <div class="column is-three-quarters">
+        <h2 class="title">Actions Log</h2>
+      </div>
+      <div class="column">
+        <h6 class="subtitle is-6">Actions count: <span class="has-text-weight-medium	">{{status.actionsCount}}</span>
+        </h6>
+      </div>
+    </div>
     <div class="__logs-body">
-      <span *ngFor="let log of logs" class="__log-item" [innerHTML]="log"></span>
+      <span *ngFor="let log of status.logs" class="__log-item" [innerHTML]="log"></span>
     </div>
   </div>
 </ng-template>

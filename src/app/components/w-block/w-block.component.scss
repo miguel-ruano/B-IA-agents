@@ -26,8 +26,9 @@
   }
 
   &.target {
-    background-size: 100%;
+    background-size: auto 100%;
     background-repeat: no-repeat;
+    background-position: center;
 
     label {
       color: white;
