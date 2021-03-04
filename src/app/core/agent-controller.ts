@@ -9,6 +9,10 @@ export interface AgentControllerCallbacks {
     onTurn?: (any) => void
 }
 
+export interface AgentControllerAction {
+    agentID: string, action: any, at: Date, [key: string]: any
+}
+
 export class AgentController {
 
     protected problem;
@@ -16,8 +20,9 @@ export class AgentController {
     protected callbacks: AgentControllerCallbacks;
     public agents: { [key: string]: Agent } = {};
     public world0: number[][] = [];
-    public actions = [];
+    public actions: AgentControllerAction[] = [];
     public data = { states: {}, world: {} };
+    public ui: { actionDelay: number } = { actionDelay: 0 };
 
     constructor() {
     }
@@ -28,6 +33,7 @@ export class AgentController {
     setup(parameter) {
         this.problem = parameter.problem;
         this.world0 = JSON.parse(JSON.stringify(parameter.world));
+        this.ui = parameter.ui || { actionDelay: 0 };
         this.data.world = JSON.parse(JSON.stringify(parameter.world));
     }
     /**
@@ -117,7 +123,7 @@ export class AgentController {
     async loop() {
         let stop = false;
         while (!stop) {
-            await sleep(750);
+            await sleep(this.ui.actionDelay);
             //Creates a thread for every single agent
             Object.values(this.agents).forEach(agent => {
                 if (!this.problem.goalTest(this.data)) {
@@ -125,12 +131,10 @@ export class AgentController {
                     let action = agent.send();
                     this.actions.push({ agentID: agent.getID(), action: action, at: new Date() });
                     this.problem.update(this.data, action, agent.getID());
-                    if (this.problem.goalTest(this.data)) {
-                        stop = true;
-                    } else {
-                        if (this.callbacks.onTurn)
-                            this.callbacks.onTurn({ actions: this.getActions(), data: this.data });
+                    if (this.callbacks.onTurn) {
+                        this.callbacks.onTurn({ actions: this.getActions(), data: this.data });
                     }
+                    stop = this.problem.goalTest(this.data);
                 }
             });
         }
