@@ -12,6 +12,13 @@
     <div class="column __settings">
       <form [formGroup]="form">
         <div class="field">
+          <label class="label">Animation Speed</label>
+          <div class="control">
+            <mat-slider #ui_speed formControlName="animationSpeed" min="100" max="1000" step="50" style="width: 100%;"></mat-slider>
+          </div>
+          <p class="help">Speed: {{ui_speed.value}}</p>
+        </div>
+        <div class="field">
           <label class="label">Max Iterations</label>
           <div class="control">
             <input formControlName="maxIterations" class="input" type="number" placeholder="Max Iterations">

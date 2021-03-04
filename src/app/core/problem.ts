@@ -5,11 +5,13 @@ import { AgentController, AgentControllerCallbacks } from "./agent-controller";
  */
 export abstract class Problem {
 
+    protected env;
     public controller: AgentController;
     public GoalCompleteMessage: string = 'Take the Goal !!!';
     public GoalIncompleteMessage: string = 'Does not take the goal :(';
 
-    constructor(initialState) {
+    constructor(env) {
+        this.env = env;
         this.controller = new AgentController();
     }
 
@@ -66,7 +68,7 @@ export abstract class Problem {
      * @param {*} callbacks 
      */
     solve(world: number[][], callbacks: AgentControllerCallbacks) {
-        this.controller.setup({ world: world, problem: this });
+        this.controller.setup({ world: world, problem: this, ui: this.env.ui });
         this.controller.start(callbacks, false);
     }
 

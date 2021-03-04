@@ -5,7 +5,7 @@ import { Problem } from './core';
 import { CheeseProblem, MouseAgent } from './models';
 
 interface AppSettings {
-  world: number[][], position: { x: number, y: number },
+  world: number[][], position: { x: number, y: number }, animationSpeed: number,
   maxIterations: number, targetSrc: string, agentCommands: { [key: string]: any }
 }
 
@@ -48,7 +48,8 @@ export class AppComponent implements OnInit {
   get form(): FormGroup {
     if (!this._form) {
       this._form = this.fb.group({
-        'maxIterations': [12, Validators.required],
+        'animationSpeed': [200, Validators.required],
+        'maxIterations': [100, Validators.required],
         'agentCommands': [JSON.stringify(UTILS.CONSTANTS.COMMANDS1)],
         'targetSrc': ['/assets/cheese.png'],
         'ip_x': [UTILS.CONSTANTS.POSITIONS1.x, Validators.required],
@@ -64,12 +65,12 @@ export class AppComponent implements OnInit {
     return {
       world: JSON.parse(form.world), position: { x: form.ip_x, y: form.ip_y },
       maxIterations: form.maxIterations, targetSrc: form.targetSrc,
-      agentCommands: JSON.parse(form.agentCommands)
+      agentCommands: JSON.parse(form.agentCommands), animationSpeed: form.animationSpeed
     };
   }
 
   cheeseProblem(settings: AppSettings) {
-    this.problem = new CheeseProblem({ maxIterations: settings.maxIterations });
+    this.problem = new CheeseProblem({ maxIterations: settings.maxIterations, ui: { actionDelay: settings.animationSpeed } });
     this.problem.addAgent('Jerry', settings.agentCommands, MouseAgent, settings?.position || { x: 0, y: 2 });
   }
 

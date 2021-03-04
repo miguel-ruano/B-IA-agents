@@ -17,13 +17,11 @@ function min(data) {
  * Simple reflex agent problem. Define a problem to be solved by a simple reflex agent 
  */
 export class CheeseProblem extends Problem {
-    public env;
     public GoalCompleteMessage: string = 'Take the Cheese !!!';
     public GoalIncompleteMessage: string = "Don't take the cheese :(";
 
     constructor(args) {
         super(args);
-        this.env = args;
     }
 
     /**
